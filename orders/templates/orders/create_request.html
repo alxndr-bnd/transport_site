@@ -1,0 +1,65 @@
+<!-- orders/templates/orders/create_request.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Request</title>
+    <script>
+        // Функция для установки даты в поле
+        function setDate(date) {
+            document.getElementById('id_desired_date').value = date;
+        }
+
+        // Функция для получения даты завтра
+        function getTomorrowDate() {
+            const tomorrow = new Date();
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            return tomorrow.toISOString().split('T')[0];  // Вернем в формате YYYY-MM-DD
+        }
+
+        // Функция для получения следующего понедельника
+        function getNextMonday() {
+            const today = new Date();
+            const dayOfWeek = today.getDay();
+            const daysUntilMonday = (7 - dayOfWeek + 1) % 7; // Сколько дней до следующего понедельника
+            today.setDate(today.getDate() + daysUntilMonday);
+            return today.toISOString().split('T')[0];
+        }
+
+        // Функция для установки сегодняшней даты
+        function getTodayDate() {
+            const today = new Date();
+            return today.toISOString().split('T')[0];
+        }
+    </script>
+</head>
+<body>
+    <h1>Create a New Request</h1>
+    <form method="post">
+        {% csrf_token %}
+        
+        <!-- Отображаем описание объекта и контактный email -->
+        <div>
+            <label for="id_description">Описание объекта перевозки</label>
+            <input type="text" id="id_description" name="description" required>
+        </div>
+
+        <div>
+            <label for="id_contact_email">Контактный email</label>
+            <input type="email" id="id_contact_email" name="contact_email" required>
+        </div>
+
+        <!-- Оставляем только графический выбор даты -->
+        <div>
+            <label for="id_desired_date">Desired Date</label>
+            <input type="date" id="id_desired_date" name="desired_date" required>
+            <a href="#" onclick="setDate(getTodayDate())">Сегодня</a>
+            <a href="#" onclick="setDate(getTomorrowDate())">Завтра</a>
+            <a href="#" onclick="setDate(getNextMonday())">Понедельник</a>
+        </div>
+
+        <button type="submit">Submit</button>
+    </form>
+</body>
+</html>

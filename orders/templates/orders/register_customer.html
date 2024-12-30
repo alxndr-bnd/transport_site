@@ -1,0 +1,59 @@
+<!-- orders/templates/orders/register_customer.html -->
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Register Customer</title>
+        <!-- Leaflet CSS -->
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+        <style>
+            #map {
+                height: 400px; /* Укажите высоту карты */
+                width: 100%;
+                margin-bottom: 20px;
+            }
+        </style>
+    </head>
+    
+<body>
+    <h1>Регистрация нового заказчика</h1>
+    
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required>
+        <div id="map"></div>
+        <input type="hidden" id="address" name="address">
+        <button type="submit">Зарегистрироваться</button>
+    </form>
+
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+        // Инициализация карты
+        const map = L.map('map').setView([45.2671, 19.8335], 13); // Центр карты (пример: Нови-Сад)
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+
+        // Маркер для выбора адреса
+        let marker = L.marker([45.2671, 19.8335], { draggable: true }).addTo(map);
+
+        // Слушатель на перемещение маркера
+        marker.on('dragend', function (e) {
+            const latlng = marker.getLatLng();
+            fetch(`https://nominatim.openstreetmap.org/reverse?lat=${latlng.lat}&lon=${latlng.lng}&format=json`)
+                .then(response => response.json())
+                .then(data => {
+                    const addressField = document.getElementById('address');
+                    addressField.value = data.display_name || "Не удалось определить адрес";
+                    alert("Выбранный адрес: " + addressField.value);
+                });
+        });
+    </script>
+
+    <p><a href="{% url 'home' %}">Вернуться на главную страницу</a></p>
+</body>
+</html>

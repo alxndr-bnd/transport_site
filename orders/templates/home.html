@@ -1,0 +1,50 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Главная страница</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+    <header>
+        <h1>Добро пожаловать на сайт перевозок</h1>
+    </header>
+    <p><a href="{% url 'register_customer' %}">Зарегистрироваться как заказчик</a></p>
+    <main>
+        <section>
+            <h2>Последние заявки</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Описание заказа перевозки</th>
+                        <th>Желаемая дата</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for request in latest_requests %}
+                        <tr>
+                            <td>{{ request.description }}</td>
+                            <td>{{ request.desired_date }}</td>
+                        </tr>
+                    {% empty %}
+                        <tr>
+                            <td colspan="3">Нет заявок.</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </section>
+        
+        <section>
+            <p>Хотите добавить новую заявку?</p>
+            <a href="{% url 'create_request' %}" class="btn">Создать заявку</a>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; {{ current_year }} Ваш сайт. Все права защищены.</p>
+    </footer>
+</body>
+</html>
