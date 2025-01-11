@@ -1,9 +1,6 @@
-<!-- orders/templates/orders/create_request.html -->
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+{% extends 'base.html' %}
+
+{% block content %}
     <title>Create Request</title>
     <script>
         // Функция для установки даты в поле
@@ -34,8 +31,8 @@
         }
     </script>
 </head>
-<body>
-    <h1>Create a New Request</h1>
+
+    <h1>Создать новую заявку</h1>
     <form method="post">
         {% csrf_token %}
         
@@ -45,10 +42,17 @@
             <input type="text" id="id_description" name="description" required>
         </div>
 
-        <div>
-            <label for="id_contact_email">Контактный email</label>
-            <input type="email" id="id_contact_email" name="contact_email" required>
-        </div>
+        {% if user.is_authenticated %}
+            <div>
+                <label for="id_contact_email">Контактный email</label>
+                <input type="email" id="id_contact_email" name="contact_email" value="{{ user.email }}" readonly>
+            </div>
+        {% else %}
+            <div>
+                <label for="id_contact_email">Контактный email</label>
+                <input type="email" id="id_contact_email" name="contact_email" required>
+            </div>
+        {% endif %}
 
         <!-- Оставляем только графический выбор даты -->
         <div>
@@ -61,5 +65,5 @@
 
         <button type="submit">Submit</button>
     </form>
-</body>
-</html>
+
+{% endblock %}

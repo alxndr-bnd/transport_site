@@ -1,8 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+{% extends 'base.html' %}
+
+{% block content %}
     <title>Успех</title>
     <script>
         let timeLeft = 5;
@@ -22,8 +20,8 @@
     </script>
 </head>
 <body>
-    <h1>Пользователь успешно зарегистрирован.</h1>
+    <h1>Пользователь {{ user.username }} успешно зарегистрирован.</h1>
     <p>Автопереход на главную страницу через <span id="timer">5</span> секунд.</p>
     <p><a href="/">На главную</a></p>
-</body>
-</html>
+
+{% endblock %}

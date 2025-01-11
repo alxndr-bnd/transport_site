@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    <h1>Список ваших заявок</h1>
+    {% if orders %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Описание объекта</th>
+                    <th>Желаемая дата</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for orders in orders %}
+                    <tr>
+                        <td>{{ orders.description }}</td>
+                        <td>{{ orders.desired_date }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>You have no orders yet.</p>
+        <section>
+            <p>Хотите добавить новую заявку?</p>
+            <a href="{% url 'create_request' %}" class="btn">Создать заявку</a>
+        </section>
+    {% endif %}
+
+    <a href="{% url 'create_request' %}">Создать новую заявку</a> 
+
+{% endblock %}

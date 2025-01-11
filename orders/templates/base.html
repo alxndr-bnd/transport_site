@@ -1,10 +1,11 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css/styles.css">
-    <title>{% block title %}Transport Site{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <title>{% block title %}Transport1P{% endblock %}</title>
 </head>
 <body>
     <header>
@@ -12,7 +13,7 @@
             <ul>
                 <li><a href="{% url 'home' %}">Главная</a></li>
                 {% if user.is_authenticated %}
-                    <li>Пользователь: {{ user.username }}
+                    <li><a href="/user-orders/">Пользователь: {{ user.username }}</a>
                         <!-- <a href="{% url 'logout' %}">Logout</a> -->
                         <form method="post" action="{% url 'logout' %}">
                             {% csrf_token %}
@@ -23,6 +24,7 @@
                 {% else %}
                 <li><a href="{% url 'login' %}">Login</a></li>    
                 <li><a href="{% url 'register_customer' %}">Зарегистрироваться как заказчик</a></li>
+                <li><a href="{% url 'register_carrier' %}">Зарегистрироваться как перевозчик</a></li>
                 {% endif %}
                 
                 <!-- Добавьте другие ссылки сюда -->
@@ -36,7 +38,7 @@
     </div>
 
     <footer>
-        <p>&copy; {{ current_year }} Ваш сайт. Все права защищены.</p>
+        <p>&copy; {{ current_year }} Transport1P. Все права защищены.</p>
     </footer>
 </body>
 </html>
