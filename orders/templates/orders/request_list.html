@@ -1,31 +1,26 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Список заявок</title>
-</head>
-<body>
-    <h1>List of Requests</h1>
-<table>
-    <thead>
-        <tr>
-            <th>Description</th>
-            <th>Desired Date</th>
-            <th>Contact Email</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for request in requests %}
-            <tr>
-                <td>{{ request.description }}</td>
-                <td>{{ request.desired_date }}</td>
-                <td>{{ request.contact_email }}</td>  <!-- Здесь выводится контактный email -->
-            </tr>
-        {% endfor %}
-    </tbody>
-</table>
+{% extends 'base.html' %}
+    <!-- <title>Список заявок</title> -->
 
-    <a href="{% url 'create_request' %}">Создать новую заявку</a>
-</body>
-</html>
+{% block content %}
+    <h1>List of Requests</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Description</th>
+                <th>Desired Date</th>
+                <th>Contact Email</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for request in requests %}
+                <tr>
+                    <td>{{ request.description }}</td>
+                    <td>{{ request.desired_date }}</td>
+                    <td>{{ request.contact_email }}</td>  <!-- Здесь выводится контактный email -->
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{% url 'create_request' %}">Создать новую заявку</a> 
+{% endblock %}

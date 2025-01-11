@@ -1,5 +1,5 @@
 from django import forms
-from .models import Response, Customer
+from .models import Response, CustomUser
 
 class ResponseForm(forms.ModelForm):
     class Meta:
@@ -20,11 +20,11 @@ class RequestForm(forms.ModelForm):
 
 class CustomerRegistrationForm(forms.ModelForm):
     class Meta:
-        model = Customer
+        model = CustomUser
         fields = ['email']
 
     def clean_email(self):
         email = self.cleaned_data.get('email')
-        if Customer.objects.filter(email=email).exists():
+        if CustomUser.objects.filter(email=email).exists():
             raise forms.ValidationError("Этот email уже зарегистрирован.")
         return email

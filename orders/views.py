@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse
-from .models import Request, Response, Customer
+from .models import Request, Response, CustomUser
 from .forms import ResponseForm, RequestForm
 from django.contrib import messages
 from .forms import CustomerRegistrationForm
@@ -64,29 +64,16 @@ def home(request):
     latest_requests = Request.objects.all().order_by('-created_at')[:5]
     return render(request, 'home.html', {'latest_requests': latest_requests})
 
-# def register_customer(request):
-#     if request.method == 'POST':
-#         form = CustomerRegistrationForm(request.POST)
-#         if form.is_valid():
-#             customer = form.save(commit=False)
-#             customer.address = request.POST.get('address')  # Получаем адрес из скрытого поля
-#             customer.save()
-#             messages.success(request, "Заказчик успешно зарегистрирован!")
-#             return redirect('home')  # Перенаправляем на главную страницу
-#         else:
-#             messages.error(request, "Ошибка при регистрации.")
-#     else:
-#         form = CustomerRegistrationForm()
-    
-#     return render(request, 'orders/register_customer.html', {'form': form})
-
 def register_customer(request):
     if request.method == 'POST':
         form = CustomerRegistrationForm(request.POST)
         if form.is_valid():
-            form.save()
-            messages.success(request, "Пользователь успешно зарегистрирован.")
-            return render(request, 'orders/success.html')  # Переход на страницу уведомления
+            user = form.save(commit=False)  # Сохраняем объект, не сохраняя в базу
+            generated_password = user.set_random_password()  # Генерируем пароль
+            user.set_password(generated_password)  # Устанавливаем хэшированный пароль
+            user.save()  # Сохраняем пользователя с новым паролем
+            return render(request, 'orders/success.html', {'form': form})
+            # messages.success(request, "Пользователь успешно зарегистрирован.")    
     else:
         form = CustomerRegistrationForm()
     return render(request, 'orders/register_customer.html', {'form': form})

@@ -2,11 +2,12 @@ from django.db import models
 from django.contrib.auth import get_user_model
 from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.models import AbstractUser
+import random, string
 
 # Create your models here.
-
 # Модель пользователя
 class CustomUser(AbstractUser):
+    
     class Roles(models.TextChoices):
         CUSTOMER = 'customer', _('Заказчик')
         CARRIER = 'carrier', _('Перевозчик')
@@ -17,12 +18,17 @@ class CustomUser(AbstractUser):
         default=Roles.CUSTOMER,
     )
 
-class Customer(models.Model):
-    email = models.EmailField()
-    address = models.TextField()  # Храним полный адрес
+    def set_random_password(self):
+        password = ''.join(random.choices(string.ascii_letters + string.digits + string.punctuation, k=8))
+        # self.set_random_password(password)  # Используем метод set_password
+        return password
 
-    def __str__(self):
-        return self.email
+    email = models.EmailField(unique=True)
+
+    def save(self, *args, **kwargs):
+        if not self.username:
+            self.username = self.email
+        super().save(*args, **kwargs)
 
 # Модель заявки
 class Request(models.Model):

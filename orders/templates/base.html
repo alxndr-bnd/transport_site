@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/styles.css">
+    <title>{% block title %}Transport Site{% endblock %}</title>
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="{% url 'home' %}">Главная</a></li>
+                {% if user.is_authenticated %}
+                    <li>Пользователь: {{ user.username }}
+                        <!-- <a href="{% url 'logout' %}">Logout</a> -->
+                        <form method="post" action="{% url 'logout' %}">
+                            {% csrf_token %}
+                            <button type="submit">Logout</button>
+                        </form>
+                    </li>
+                    
+                {% else %}
+                <li><a href="{% url 'login' %}">Login</a></li>    
+                <li><a href="{% url 'register_customer' %}">Зарегистрироваться как заказчик</a></li>
+                {% endif %}
+                
+                <!-- Добавьте другие ссылки сюда -->
+            </ul>
+        </nav>
+    </header>
+    
+
+    <div>
+        {% block content %}{% endblock %}
+    </div>
+
+    <footer>
+        <p>&copy; {{ current_year }} Ваш сайт. Все права защищены.</p>
+    </footer>
+</body>
+</html>
