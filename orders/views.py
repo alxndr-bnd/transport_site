@@ -82,14 +82,11 @@ def home(request):
 
 def register_customer(request):
     if request.method == 'POST':
-        email = request.POST['email']
-        # Проверка наличия email
-        if Customer.objects.filter(email=email).exists():
-            return HttpResponse("Этот email уже зарегистрирован.")
-        try:
-            customer = Customer(email=email, address=request.POST['address'])
-            customer.save()
-        except IntegrityError:
-            return HttpResponse("Ошибка при регистрации. Попробуйте еще раз.")
-        return HttpResponse("Пользователь успешно зарегистрирован.")
-    return render(request, 'orders/register_customer.html')
+        form = CustomerRegistrationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Пользователь успешно зарегистрирован.")
+            return render(request, 'orders/success.html')  # Переход на страницу уведомления
+    else:
+        form = CustomerRegistrationForm()
+    return render(request, 'orders/register_customer.html', {'form': form})

@@ -13,7 +13,18 @@ class RequestForm(forms.ModelForm):
         model = Request
         fields = ['description', 'desired_date', 'contact_email']  # Укажите нужные поля из модели
 
+# class CustomerRegistrationForm(forms.ModelForm):
+#     class Meta:
+#         model = Customer
+#         fields = ['email']  # Адрес передается через скрытое поле
+
 class CustomerRegistrationForm(forms.ModelForm):
     class Meta:
         model = Customer
-        fields = ['email']  # Адрес передается через скрытое поле
+        fields = ['email']
+
+    def clean_email(self):
+        email = self.cleaned_data.get('email')
+        if Customer.objects.filter(email=email).exists():
+            raise forms.ValidationError("Этот email уже зарегистрирован.")
+        return email
