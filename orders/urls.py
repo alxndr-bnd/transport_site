@@ -12,6 +12,8 @@ urlpatterns = [
     path('user-orders/', views.user_orders, name='user_orders'),
     path('register-carrier/', views.register_carrier, name='register_carrier'),
     path('request-details/', views.request_detail, name='request_detail'),
+    path('request/<int:request_id>/', views.request_detail, name='request_detail'),
+    path('response/accept/<int:response_id>/', views.accept_response, name='accept_response'),
     # Другие маршруты
     path('login/', LoginView.as_view(template_name='login.html'), name='login'),
     path('logout/', LogoutView.as_view(), name='logout'),

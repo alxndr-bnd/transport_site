@@ -17,7 +17,7 @@
                         <tr>
                             <td>{{ order.description }}</td>
                             <td>{{ order.desired_date }}</td>
-                            <td><a href="">Посмотреть</a></td>
+                            <td><a href="{% url 'request_detail' order.id %}">Посмотреть</a></td>
                         </tr>
                     {% empty %}
                         <tr>

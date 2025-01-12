@@ -103,3 +103,10 @@ def register_carrier(request):
         form = CarrierRegistrationForm()
 
     return render(request, 'register_carrier.html', {'form': form})
+
+def accept_response(request, response_id):
+    response = get_object_or_404(Response, id=response_id)
+    if request.user == response.request.created_by:
+        response.is_accepted = True
+        response.save()
+    return redirect('request_detail', request_id=response.request.id)
