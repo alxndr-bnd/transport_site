@@ -1,11 +1,10 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse
-from .models import Request, Response, CustomUser
-from .forms import ResponseForm, RequestForm
 from django.contrib import messages
-from .forms import CustomerRegistrationForm
 from django.db.utils import IntegrityError
 from django.contrib.auth.decorators import login_required
+from .models import Request, Response, CustomUser
+from .forms import ResponseForm, RequestForm, CustomerRegistrationForm, CarrierRegistrationForm
 
 # Create your views here.
 
@@ -53,7 +52,12 @@ def request_detail(request, request_id):
     else:
         form = ResponseForm()
 
+    # Фильтрация откликов по пользователю
+    if request.user == request_obj.created_by:
+        responses = request_obj.responses.all()  # Получаем все отклики для заявки
+
     return render(request, 'request_detail.html', {'request': request_obj, 'form': form, 'responses': responses})
+
 
 def request_list(request):
     # Извлекаем все заявки
@@ -83,8 +87,6 @@ def register_customer(request):
 def user_orders(request):
     user_orders = Request.objects.filter(created_by=request.user)  # Заказы текущего пользователя
     return render(request, 'user_orders.html', {'orders': user_orders})
-
-from .forms import CarrierRegistrationForm
 
 def register_carrier(request):
     if request.method == 'POST':

@@ -61,10 +61,8 @@ class Response(models.Model):
     request = models.ForeignKey('Request', on_delete=models.CASCADE, related_name='responses')  # Связь с заявкой
     carrier = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)  # Перевозчик, откликнувшийся на заявку
     message = models.TextField()  # Сообщение перевозчика
+    price = models.IntegerField()
     responded_at = models.DateTimeField(auto_now_add=True)  # Время отклика
 
     def __str__(self):
-        return f"Response by {self.carrier.username} for {self.request.title}"
-
-    def __str__(self):
-        return self.title
+        return f"Response by {self.carrier.username} at {self.responded_at} for {self.request.title}"

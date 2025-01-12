@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h2>Детали заявки</h2>
+    <p>{{ request.title }}</p>
+    <p>{{ request.description }}</p>
+
+    {% if user.is_authenticated and user.role == 'carrier' %}
+        <h3>Предложить цену перевозки</h3>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Отправить предложение</button>
+        </form>
+    {% endif %}
+
+    <h2>Отзывы на вашу заявку</h2>
+    <ul>
+        {% for response in responses %}
+            <li>{{ response.carrier.username }} предложил цену: {{ response.price }}</li>
+        {% endfor %}
+    </ul>
+
+{% endblock %}
