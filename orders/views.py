@@ -110,3 +110,19 @@ def accept_response(request, response_id):
         response.is_accepted = True
         response.save()
     return redirect('request_detail', request_id=response.request.id)
+
+@login_required
+def carrier_dashboard(request):
+    if request.user.role != 'carrier':
+        return redirect('user_orders')  # Перенаправляем не перевозчиков на главную
+
+    # Отклики текущего перевозчика
+    responses = Response.objects.filter(carrier=request.user)
+
+    # Последние 10 заказов
+    latest_requests = Request.objects.order_by('-created_at')[:10]
+
+    return render(request, 'carrier_dashboard.html', {
+        'responses': responses,
+        'latest_requests': latest_requests,
+    })
