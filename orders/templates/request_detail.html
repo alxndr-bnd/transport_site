@@ -17,7 +17,14 @@
     <h2>Отзывы на вашу заявку</h2>
     <ul>
         {% for response in responses %}
-            <li>{{ response.carrier.username }} предложил цену: {{ response.price }}</li>
+            <li>
+                {{ response.carrier.username }} предложил цену: {{ response.price }}
+                {% if user == request.created_by and not response.is_accepted %}
+                    <a href="{% url 'accept_response' response.id %}">Принять</a>
+                {% elif response.is_accepted %}
+                    <strong>Принято</strong>
+                {% endif %}
+            </li>
         {% endfor %}
     </ul>
 

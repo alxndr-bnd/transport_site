@@ -63,6 +63,7 @@ class Response(models.Model):
     message = models.TextField()  # Сообщение перевозчика
     price = models.IntegerField()
     responded_at = models.DateTimeField(auto_now_add=True)  # Время отклика
+    is_accepted = models.BooleanField(default=False, verbose_name="Принят")
 
     def __str__(self):
         return f"Response by {self.carrier.username} at {self.responded_at} for {self.request.title}"
