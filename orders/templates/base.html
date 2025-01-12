@@ -13,7 +13,7 @@
             <ul>
                 <li><a href="{% url 'home' %}">Главная</a></li>
                 {% if user.is_authenticated %}
-                    <li><a href="/user-orders/">Пользователь: {{ user.username }}</a>
+                    <li><a href="/user-orders/">Пользователь: {{ user.username }}</a>, {{ user.role }}
                         <!-- <a href="{% url 'logout' %}">Logout</a> -->
                         <form method="post" action="{% url 'logout' %}">
                             {% csrf_token %}

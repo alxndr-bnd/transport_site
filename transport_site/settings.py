@@ -152,5 +152,6 @@ AUTHENTICATION_BACKENDS = [
 ]
 
 LOGIN_URL = '/login/'  # Укажите ваш URL для страницы логина
-LOGIN_REDIRECT_URL = '/user-orders/'  # Перенаправление после логина
+LOGIN_REDIRECT_URL = '/carrier-dashboard/'  # Перенаправление после логина
 LOGOUT_REDIRECT_URL = '/'
+
