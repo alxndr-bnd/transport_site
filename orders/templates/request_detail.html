@@ -3,6 +3,7 @@
 {% block content %}
     <h2>Детали заявки</h2>
     <p>{{ request.title }}</p>
+    <p>Желаемая дата доставки: {{ request.desired_date }}</p>
     <p>{{ request.description }}</p>
 
     {% if user.is_authenticated and user.role == 'carrier' %}
@@ -14,18 +15,23 @@
         </form>
     {% endif %}
 
-    <h2>Отзывы на вашу заявку</h2>
-    <ul>
-        {% for response in responses %}
-            <li>
-                {{ response.carrier.username }} предложил цену: {{ response.price }}
-                {% if user == request.created_by and not response.is_accepted %}
-                    <a href="{% url 'accept_response' response.id %}">Принять</a>
-                {% elif response.is_accepted %}
-                    <strong>Принято</strong>
-                {% endif %}
-            </li>
-        {% endfor %}
-    </ul>
+    <h2>Ответы на вашу заявку</h2>
+    {% if responses %}
+        <ul>
+            {% for response in responses %}
+                <li>
+                    {{ response.carrier.username }} предложил цену: {{ response.price }}
+                    {% if user == request.created_by and not response.is_accepted %}
+                        <a href="{% url 'accept_response' response.id %}">Принять</a>
+                    {% elif response.is_accepted %}
+                        <strong>Принято</strong>
+                    {% endif %}
+                </li>
+            {% endfor %}
+        </ul>        
+    {% else %}
+        <p>Пока нет ответов на вашу заявку.</p>
+    {% endif %}
+    
 
 {% endblock %}
